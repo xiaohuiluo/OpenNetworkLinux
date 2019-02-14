@@ -78,7 +78,9 @@ onlp-dev:
 	# Share libraries
 	cp $(ONLP_BUILD)/*/BUILD/*/x86_64-linux-gnu/bin/*.so $(TEMP_DIR)/lib
 	# Include files
-	cp -r $(ONL)/sm/bigcode/modules/*/module/inc/* $(TEMP_DIR)/include
+	cp -r $(ONL)/sm/infra/modules/AIM/module/inc/* $(TEMP_DIR)/include
+	cp -r $(ONL)/sm/bigcode/modules/BigData/BigList/module/inc/BigList $(TEMP_DIR)/include
+	cp -r $(ONL)/sm/bigcode/modules/**/module/inc/* $(TEMP_DIR)/include
 	cp -r $(ONL)/packages/base/any/onlp/src/*/module/inc/* $(TEMP_DIR)/include
 	# Patch sff.h
 	sed -i '/dependmodules.x/d' $(TEMP_DIR)/include/sff/sff.h
