@@ -23,3 +23,9 @@ RELEASE/
 # temporary files
 *~
 .#*
+
+# CLion
+.idea
+CMakeLists.txt
+cmake-build-debug
+
