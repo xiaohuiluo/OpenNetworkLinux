@@ -113,6 +113,10 @@ ap.add_argument("--command", "-c",
                 nargs=argparse.REMAINDER,
                 default=['bash'])
 
+ap.add_argument("--onlp-dev",
+                help="Build ONLP development tarball",
+                action='store_true')
+
 ops = ap.parse_args()
 
 if ops.debian7:
@@ -192,6 +196,9 @@ else:
 
       if ops.autobuild:
          g_docker_arguments += " -e ONL_AUTOBUILD=1 "
+
+      if ops.onlp_dev:
+          g_docker_arguments += " -e ONLP_DEV_TAR=1 "
 
    else:
       # Development host mode

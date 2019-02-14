@@ -4,6 +4,7 @@
 #
 ############################################################
 ifneq ($(MAKECMDGOALS),docker)
+ifneq ($(MAKECMDGOALS),docker-onlp-dev)
 ifneq ($(MAKECMDGOALS),docker-debug)
 
 ifndef ONL
@@ -40,8 +41,9 @@ rebuild:
 modclean:
 	rm -rf $(ONL)/make/modules/modules.*
 
-endif
-endif
+endif # neq docker-debug
+endif # neq docker-onlp-dev
+endif # neq docker
 
 .PHONY: docker
 
@@ -59,9 +61,27 @@ docker: docker_check
 docker-debug: docker_check
 	@docker/tools/onlbuilder -$(VERSION) --isolate --hostname onlbuilder$(VERSION) --pull
 
-
 versions:
 	$(ONL)/tools/make-versions.py --import-file=$(ONL)/tools/onlvi --class-name=OnlVersionImplementation --output-dir $(ONL)/make/versions --force
 
 relclean:
 	@find $(ONL)/RELEASE -name "ONL-*" -delete
+
+docker-onlp-dev: docker_check
+	@docker/tools/onlbuilder -$(VERSION) --isolate --hostname onlbuilder$(VERSION) --pull --onlp-dev --non-interactive
+
+ONLP_BUILD := $(ONL)/packages/base/amd64/onlp/builds
+TEMP_DIR := /tmp/onlp-dev_1.0.0_amd64
+onlp-dev:
+	make -C $(ONLP_BUILD)
+	mkdir -p $(TEMP_DIR)/lib $(TEMP_DIR)/include
+	# Share libraries
+	cp $(ONLP_BUILD)/*/BUILD/*/x86_64-linux-gnu/bin/*.so $(TEMP_DIR)/lib
+	# Include files
+	cp -r $(ONL)/sm/bigcode/modules/*/module/inc/* $(TEMP_DIR)/include
+	cp -r $(ONL)/packages/base/any/onlp/src/*/module/inc/* $(TEMP_DIR)/include
+	# Patch sff.h
+	sed -i '/dependmodules.x/d' $(TEMP_DIR)/include/sff/sff.h
+	# Package as tar.gz
+	tar -zcf onlp-dev_1.0.0_amd64.tar.gz -C /tmp onlp-dev_1.0.0_amd64
+	rm -rf $(TEMP_DIR)

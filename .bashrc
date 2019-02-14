@@ -18,6 +18,9 @@ set -e
 if [ -n "$ONL_AUTOBUILD" ]; then
     make all
     exit 0
+elif [ -n "$ONLP_DEV_TAR" ]; then
+    make onlp-dev
+    exit 0
 else
     echo Ready to build OpenNetworkLinux.
 fi
