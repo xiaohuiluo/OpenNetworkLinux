@@ -70,8 +70,9 @@ relclean:
 docker-onlp-dev: docker_check
 	@docker/tools/onlbuilder -$(VERSION) --isolate --hostname onlbuilder$(VERSION) --pull --onlp-dev --non-interactive
 
+ONLP_DEV_TAR_NAME := onlp-dev_1.0.0_amd64
 ONLP_BUILD := $(ONL)/packages/base/amd64/onlp/builds
-TEMP_DIR := /tmp/onlp-dev_1.0.0_amd64
+TEMP_DIR := /tmp/$(ONLP_DEV_TAR_NAME)
 onlp-dev:
 	make -C $(ONLP_BUILD)
 	mkdir -p $(TEMP_DIR)/lib $(TEMP_DIR)/include
@@ -85,5 +86,5 @@ onlp-dev:
 	# Patch sff.h
 	sed -i '/dependmodules.x/d' $(TEMP_DIR)/include/sff/sff.h
 	# Package as tar.gz
-	tar -zcf onlp-dev_1.0.0_amd64.tar.gz -C /tmp onlp-dev_1.0.0_amd64
+	tar -zcf $(ONLP_DEV_TAR_NAME).tar.gz -C /tmp $(ONLP_DEV_TAR_NAME)
 	rm -rf $(TEMP_DIR)

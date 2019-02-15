@@ -8,6 +8,7 @@ dependmodules.x
 *.sqsh
 *.pyc
 *.pyo
+onlp-dev*.tar.gz
 
 # Package cache and lock files
 .lock

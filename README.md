@@ -1,5 +1,6 @@
 Open Network Linux
 ==================
+![alt text](https://scan.coverity.com/projects/8655/badge.svg "Coverity Scan Build Status")
 
 Check out the main/offical website at http://opennetlinux.org .
 
@@ -21,4 +22,13 @@ Documentation
 
 Please see the docs directory for additional information. 
 
-![alt text] (https://scan.coverity.com/projects/8655/badge.svg "Coverity Scan Build Status")
+ONLP development kit
+-------------
+
+To build development kit tarball, use following script:
+
+```bash
+make docker-onlp-dev
+```
+
+This generate a tarball which contains the necessary *.so files and header files for ONLP development.
