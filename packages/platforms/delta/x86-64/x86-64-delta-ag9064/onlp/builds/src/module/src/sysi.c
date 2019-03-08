@@ -23,7 +23,8 @@
  * HardwareVersion: 02
  *
  ***********************************************************/
- 
+
+#if 0
 #include <onlp/platformi/sysi.h>
 #include <onlplib/crc32.h>
 #include <onlplib/file.h>
@@ -212,3 +213,5 @@ int onlp_sysi_platform_manage_leds(void)
         
     return ONLP_STATUS_OK;
 }
+
+#endif

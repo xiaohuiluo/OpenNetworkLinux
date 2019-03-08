@@ -148,8 +148,16 @@ static int port_to_presence_all_bitmap(int portstart, int portend, uint64_t* pre
     return 0;
 }
 
-int onlp_sfpi_init(void)
+int onlp_sfpi_sw_init(void)
 {
+    return ONLP_STATUS_OK;
+}
+
+int onlp_sfpi_hw_init(uint32_t flags) {
+    return ONLP_STATUS_OK;
+}
+
+int onlp_sfpi_sw_denit(void) {
     return ONLP_STATUS_OK;
 }
 
@@ -167,7 +175,7 @@ int onlp_sfpi_bitmap_get(onlp_sfp_bitmap_t* bmap)
     return ONLP_STATUS_OK;
 }
 
-int onlp_sfpi_is_present(int port)
+int onlp_sfpi_is_present(onlp_oid_id_t port)
 {
     int rv = ONLP_STATUS_OK;
     uint32_t present_bit = 0, IsPresent = 0;
@@ -232,11 +240,6 @@ int onlp_sfpi_presence_bitmap_get(onlp_sfp_bitmap_t* dst)
     return ONLP_STATUS_OK;
 }
 
-int onlp_sfpi_rx_los_bitmap_get(onlp_sfp_bitmap_t* dst)
-{
-    return ONLP_STATUS_E_UNSUPPORTED;
-}
-
 int onlp_sfpi_eeprom_read(int port, uint8_t data[256])
 {
     if(onlp_i2c_writeb(I2C_BUS_3, PCA9548_I2C_MUX_ADDR, 0x00, QSFP_CHAN_ON_PCA9548, 0) != ONLP_STATUS_OK)
@@ -269,8 +272,4 @@ int onlp_sfpi_dom_read(int port, uint8_t data[256])
     return onlp_sfpi_eeprom_read( port, data);
 }
 
-int onlp_sfpi_ioctl(int port, va_list vargs)
-{
-    return ONLP_STATUS_E_UNSUPPORTED;
-}
 

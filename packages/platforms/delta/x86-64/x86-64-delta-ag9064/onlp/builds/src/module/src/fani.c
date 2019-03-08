@@ -34,73 +34,72 @@
 
 #include "platform_lib.h"
 
-#define VALIDATE(_id)                           \
-    do                                          \
-    {                                           \
-        if(!ONLP_OID_IS_FAN(_id))               \
-        {                                       \
-            return ONLP_STATUS_E_INVALID;       \
-        }                                       \
-    } while(0)
-
 /* Static values */
 static onlp_fan_info_t linfo[] = 
 {
     { }, /* Not used */
     { 
-        { ONLP_FAN_ID_CREATE(FAN_1_ON_FAN_BOARD), "Chassis Fan 4 front", 0},
-        ONLP_FAN_STATUS_PRESENT,
-        ONLP_FAN_CAPS_GET_RPM | ONLP_FAN_CAPS_GET_PERCENTAGE, 0, 0, ONLP_FAN_MODE_INVALID,
+        { ONLP_FAN_ID_CREATE(FAN_1_ON_FAN_BOARD), "Chassis Fan 4 front", 0, {}, ONLP_FAN_STATUS_PRESENT},
+        ONLP_FAN_DIR_UNKNOWN,
+        ONLP_FAN_CAPS_GET_RPM | ONLP_FAN_CAPS_GET_PERCENTAGE, 0, 0,
     },
     {
-        { ONLP_FAN_ID_CREATE(FAN_2_ON_FAN_BOARD), "Chassis Fan 3 front", 0},
-        ONLP_FAN_STATUS_PRESENT,
-        ONLP_FAN_CAPS_GET_RPM | ONLP_FAN_CAPS_GET_PERCENTAGE, 0, 0, ONLP_FAN_MODE_INVALID,
-    },
-    { 
-        { ONLP_FAN_ID_CREATE(FAN_3_ON_FAN_BOARD), "Chassis Fan 2 front", 0},
-        ONLP_FAN_STATUS_PRESENT,
-        ONLP_FAN_CAPS_GET_RPM | ONLP_FAN_CAPS_GET_PERCENTAGE, 0, 0, ONLP_FAN_MODE_INVALID,
-    },
-    { 
-        { ONLP_FAN_ID_CREATE(FAN_4_ON_FAN_BOARD), "Chassis Fan 1 front", 0},
-        ONLP_FAN_STATUS_PRESENT,
-        ONLP_FAN_CAPS_GET_RPM | ONLP_FAN_CAPS_GET_PERCENTAGE, 0, 0, ONLP_FAN_MODE_INVALID,
-    },
-    { 
-        { ONLP_FAN_ID_CREATE(FAN_6_ON_FAN_BOARD), "Chassis Fan 4 rear", 0},
-        ONLP_FAN_STATUS_PRESENT,
-        ONLP_FAN_CAPS_GET_RPM | ONLP_FAN_CAPS_GET_PERCENTAGE, 0, 0, ONLP_FAN_MODE_INVALID,
+        { ONLP_FAN_ID_CREATE(FAN_2_ON_FAN_BOARD), "Chassis Fan 3 front", 0, {}, ONLP_FAN_STATUS_PRESENT},
+        ONLP_FAN_DIR_UNKNOWN,
+        ONLP_FAN_CAPS_GET_RPM | ONLP_FAN_CAPS_GET_PERCENTAGE, 0, 0,
     },
     {
-        { ONLP_FAN_ID_CREATE(FAN_7_ON_FAN_BOARD), "Chassis Fan 3 rear", 0},
-        ONLP_FAN_STATUS_PRESENT,
-        ONLP_FAN_CAPS_GET_RPM | ONLP_FAN_CAPS_GET_PERCENTAGE, 0, 0, ONLP_FAN_MODE_INVALID,
+        { ONLP_FAN_ID_CREATE(FAN_3_ON_FAN_BOARD), "Chassis Fan 2 front", 0, {}, ONLP_FAN_STATUS_PRESENT},
+        ONLP_FAN_DIR_UNKNOWN,
+        ONLP_FAN_CAPS_GET_RPM | ONLP_FAN_CAPS_GET_PERCENTAGE, 0, 0,
     },
-    { 
-        { ONLP_FAN_ID_CREATE(FAN_8_ON_FAN_BOARD), "Chassis Fan 2 rear", 0},
-        ONLP_FAN_STATUS_PRESENT,
-        ONLP_FAN_CAPS_GET_RPM | ONLP_FAN_CAPS_GET_PERCENTAGE, 0, 0, ONLP_FAN_MODE_INVALID,
+    {
+        { ONLP_FAN_ID_CREATE(FAN_4_ON_FAN_BOARD), "Chassis Fan 1 front", 0, {}, ONLP_FAN_STATUS_PRESENT},
+        ONLP_FAN_DIR_UNKNOWN,
+        ONLP_FAN_CAPS_GET_RPM | ONLP_FAN_CAPS_GET_PERCENTAGE, 0, 0,
     },
-    { 
-        { ONLP_FAN_ID_CREATE(FAN_9_ON_FAN_BOARD), "Chassis Fan 1 rear", 0},
-        ONLP_FAN_STATUS_PRESENT,
-        ONLP_FAN_CAPS_GET_RPM | ONLP_FAN_CAPS_GET_PERCENTAGE, 0, 0, ONLP_FAN_MODE_INVALID,
+    {
+        { ONLP_FAN_ID_CREATE(FAN_6_ON_FAN_BOARD), "Chassis Fan 4 rear", 0, {}, ONLP_FAN_STATUS_PRESENT},
+        ONLP_FAN_DIR_UNKNOWN,
+        ONLP_FAN_CAPS_GET_RPM | ONLP_FAN_CAPS_GET_PERCENTAGE, 0, 0,
     },
-    { 
-        { ONLP_FAN_ID_CREATE(FAN_ON_PSU1), "FAN ON PSU1", 0},
-        ONLP_FAN_STATUS_PRESENT,
-        ONLP_FAN_CAPS_GET_RPM | ONLP_FAN_CAPS_GET_PERCENTAGE, 0, 0, ONLP_FAN_MODE_INVALID,
+    {
+        { ONLP_FAN_ID_CREATE(FAN_7_ON_FAN_BOARD), "Chassis Fan 3 rear", 0, {}, ONLP_FAN_STATUS_PRESENT},
+        ONLP_FAN_DIR_UNKNOWN,
+        ONLP_FAN_CAPS_GET_RPM | ONLP_FAN_CAPS_GET_PERCENTAGE, 0, 0,
     },
-    { 
-        { ONLP_FAN_ID_CREATE(FAN_ON_PSU2), "FAN ON PSU2", 0},
-        ONLP_FAN_STATUS_PRESENT,
-        ONLP_FAN_CAPS_GET_RPM | ONLP_FAN_CAPS_GET_PERCENTAGE, 0, 0, ONLP_FAN_MODE_INVALID,
+    {
+        { ONLP_FAN_ID_CREATE(FAN_8_ON_FAN_BOARD), "Chassis Fan 2 rear", 0, {}, ONLP_FAN_STATUS_PRESENT},
+        ONLP_FAN_DIR_UNKNOWN,
+        ONLP_FAN_CAPS_GET_RPM | ONLP_FAN_CAPS_GET_PERCENTAGE, 0, 0,
+    },
+    {
+        { ONLP_FAN_ID_CREATE(FAN_9_ON_FAN_BOARD), "Chassis Fan 1 rear", 0, {}, ONLP_FAN_STATUS_PRESENT},
+        ONLP_FAN_DIR_UNKNOWN,
+        ONLP_FAN_CAPS_GET_RPM | ONLP_FAN_CAPS_GET_PERCENTAGE, 0, 0,
+    },
+    {
+        { ONLP_FAN_ID_CREATE(FAN_ON_PSU1), "FAN ON PSU1", 0, {}, ONLP_FAN_STATUS_PRESENT},
+        ONLP_FAN_DIR_UNKNOWN,
+        ONLP_FAN_CAPS_GET_RPM | ONLP_FAN_CAPS_GET_PERCENTAGE, 0, 0,
+    },
+    {
+        { ONLP_FAN_ID_CREATE(FAN_ON_PSU2), "FAN ON PSU2", 0, {}, ONLP_FAN_STATUS_PRESENT},
+        ONLP_FAN_DIR_UNKNOWN,
+        ONLP_FAN_CAPS_GET_RPM | ONLP_FAN_CAPS_GET_PERCENTAGE, 0, 0,
     },
 };
 
-int onlp_fani_init(void)
+int onlp_fani_sw_init(void)
 {
+    return ONLP_STATUS_OK;
+}
+
+int onlp_fani_hw_init(uint32_t flags) {
+    return ONLP_STATUS_OK;
+}
+
+int onlp_fani_sw_denit(void) {
     return ONLP_STATUS_OK;
 }
 
@@ -221,13 +220,18 @@ static int dni_fani_info_get_on_psu(int local_id, onlp_fan_info_t* info)
     return rv;
 }
 
-int onlp_fani_info_get(onlp_oid_t id, onlp_fan_info_t* info)
+int onlp_fani_hdr_get(onlp_oid_id_t id, onlp_oid_hdr_t* hdr) {
+    onlp_fan_info_t info;
+    onlp_fani_info_get(id, &info);
+    *hdr = info.hdr;
+    return ONLP_STATUS_OK;
+}
+
+int onlp_fani_info_get(onlp_oid_id_t id, onlp_fan_info_t* info)
 {
     int rv       = ONLP_STATUS_OK;
     int local_id = 0;
-                
-    VALIDATE(id);
-    
+
     local_id = ONLP_OID_ID_GET(id);
     *info = linfo[ONLP_OID_ID_GET(id)];
     
@@ -255,24 +259,4 @@ int onlp_fani_info_get(onlp_oid_t id, onlp_fan_info_t* info)
     }
     
     return rv;
-}
-
-int onlp_fani_percentage_set(onlp_oid_t id, int p)
-{
-    return ONLP_STATUS_E_UNSUPPORTED;
-}
-
-int onlp_fani_rpm_set(onlp_oid_t id, int rpm)
-{
-    return ONLP_STATUS_E_UNSUPPORTED;
-}
-
-int onlp_fani_mode_set(onlp_oid_t id, onlp_fan_mode_t mode)
-{
-    return ONLP_STATUS_E_UNSUPPORTED;
-}
-
-int onlp_fani_ioctl(onlp_oid_t fid, va_list vargs)
-{
-    return ONLP_STATUS_E_UNSUPPORTED;
 }

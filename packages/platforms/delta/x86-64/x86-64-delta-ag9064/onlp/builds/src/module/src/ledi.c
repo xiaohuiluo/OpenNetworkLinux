@@ -33,15 +33,6 @@
 
 #include "platform_lib.h"
 
-#define VALIDATE(_id)                           \
-    do                                          \
-    {                                           \
-        if(!ONLP_OID_IS_LED(_id))               \
-        {                                       \
-            return ONLP_STATUS_E_INVALID;       \
-        }                                       \
-    } while(0)
-
 /*
  * Get the information for the given LED OID.
  */
@@ -81,43 +72,35 @@ static onlp_led_info_t linfo[] =
 {
     { },
     {
-        { ONLP_LED_ID_CREATE(LED_FAN), "FAN LED (FRONT PANEL)", 0 },
-        ONLP_LED_STATUS_PRESENT,
+        { ONLP_LED_ID_CREATE(LED_FAN), "FAN LED (FRONT PANEL)", 0, {}, ONLP_LED_STATUS_PRESENT},
         ONLP_LED_CAPS_ON_OFF | ONLP_LED_CAPS_GREEN | ONLP_LED_CAPS_RED,
     },
     {
-        { ONLP_LED_ID_CREATE(LED_SYS), "SYSTEM LED (FRONT PANEL)", 0 },
-        ONLP_LED_STATUS_PRESENT,
+        { ONLP_LED_ID_CREATE(LED_SYS), "SYSTEM LED (FRONT PANEL)", 0, {}, ONLP_LED_STATUS_PRESENT},
         ONLP_LED_CAPS_ON_OFF | ONLP_LED_CAPS_GREEN | ONLP_LED_CAPS_GREEN_BLINKING | ONLP_LED_CAPS_RED,
     },
     {
-        { ONLP_LED_ID_CREATE(LED_PSU1), "PSU1 LED (FRONT PANEL)", 0 },
-        ONLP_LED_STATUS_PRESENT,
+        { ONLP_LED_ID_CREATE(LED_PSU1), "PSU1 LED (FRONT PANEL)", 0, {}, ONLP_LED_STATUS_PRESENT},
         ONLP_LED_CAPS_ON_OFF | ONLP_LED_CAPS_GREEN | ONLP_LED_CAPS_RED,
     },
     {
-        { ONLP_LED_ID_CREATE(LED_PSU2), "PSU2 LED (FRONT PANEL)", 0 },
-        ONLP_LED_STATUS_PRESENT,
+        { ONLP_LED_ID_CREATE(LED_PSU2), "PSU2 LED (FRONT PANEL)", 0, {}, ONLP_LED_STATUS_PRESENT},
         ONLP_LED_CAPS_ON_OFF | ONLP_LED_CAPS_GREEN | ONLP_LED_CAPS_RED,
     },
     {
-        { ONLP_LED_ID_CREATE(LED_FAN_TRAY_1), "FAN TRAY 1", 0 },
-        ONLP_LED_STATUS_PRESENT,
+        { ONLP_LED_ID_CREATE(LED_FAN_TRAY_1), "FAN TRAY 1", 0, {}, ONLP_LED_STATUS_PRESENT},
         ONLP_LED_CAPS_GREEN | ONLP_LED_CAPS_ORANGE,
     },
     {
-        { ONLP_LED_ID_CREATE(LED_FAN_TRAY_2), "FAN TRAY 2", 0 },
-        ONLP_LED_STATUS_PRESENT,
+        { ONLP_LED_ID_CREATE(LED_FAN_TRAY_2), "FAN TRAY 2", 0, {}, ONLP_LED_STATUS_PRESENT},
         ONLP_LED_CAPS_GREEN | ONLP_LED_CAPS_ORANGE,
     },
     {
-        { ONLP_LED_ID_CREATE(LED_FAN_TRAY_3), "FAN TRAY 3", 0 },
-        ONLP_LED_STATUS_PRESENT,
+        { ONLP_LED_ID_CREATE(LED_FAN_TRAY_3), "FAN TRAY 3", 0, {}, ONLP_LED_STATUS_PRESENT},
         ONLP_LED_CAPS_GREEN | ONLP_LED_CAPS_ORANGE,
     },
     {
-        { ONLP_LED_ID_CREATE(LED_FAN_TRAY_4), "FAN TRAY 4", 0 },
-        ONLP_LED_STATUS_PRESENT,
+        { ONLP_LED_ID_CREATE(LED_FAN_TRAY_4), "FAN TRAY 4", 0, {}, ONLP_LED_STATUS_PRESENT},
         ONLP_LED_CAPS_GREEN | ONLP_LED_CAPS_ORANGE,
     },
 };
@@ -152,18 +135,24 @@ static int onlp_to_driver_led_mode(enum onlp_led_id id, onlp_led_mode_t onlp_led
     return 0;
 }
 
-int onlp_ledi_init(void)
+int onlp_ledi_sw_init(void)
 {
     return ONLP_STATUS_OK;
 }
 
-int onlp_ledi_info_get(onlp_oid_t id, onlp_led_info_t* info)
+int onlp_ledi_hw_init(uint32_t flags) {
+    return ONLP_STATUS_OK;
+}
+
+int onlp_ledi_sw_denit(void) {
+    return ONLP_STATUS_OK;
+}
+
+int onlp_ledi_info_get(onlp_oid_id_t id, onlp_led_info_t* rv)
 {
     int  rv          = ONLP_STATUS_OK;
     int  local_id    = 0;
     uint32_t LedMode = 0;
-            
-    VALIDATE(id);
     
     local_id = ONLP_OID_ID_GET(id);
     *info = linfo[local_id];
@@ -254,24 +243,7 @@ int onlp_ledi_info_get(onlp_oid_t id, onlp_led_info_t* info)
     return rv;
 }
 
-int onlp_ledi_set(onlp_oid_t id, int on_or_off)
-{
-    VALIDATE(id);
-        
-    if (!on_or_off)
-    {
-        return onlp_ledi_mode_set(id, ONLP_LED_MODE_OFF);
-    }
-    
-    return ONLP_STATUS_E_UNSUPPORTED;
-}
-
-int onlp_ledi_ioctl(onlp_oid_t id, va_list vargs)
-{
-    return ONLP_STATUS_E_UNSUPPORTED;
-}
-
-int onlp_ledi_mode_set(onlp_oid_t id, onlp_led_mode_t mode)
+int onlp_ledi_mode_set(onlp_oid_id_t id, onlp_led_mode_t mode)
 {
     int  rv             = ONLP_STATUS_OK;
     int  local_id       = 0;
@@ -279,9 +251,7 @@ int onlp_ledi_mode_set(onlp_oid_t id, onlp_led_mode_t mode)
     uint32_t NewLedMode = 0;
     uint32_t OldLedMode = 0;
     onlp_led_mode_t driver_led_mode = 0;
-    
-    VALIDATE(id);
-    
+
     local_id = ONLP_OID_ID_GET(id);
     driver_led_mode = onlp_to_driver_led_mode(local_id, mode);
     

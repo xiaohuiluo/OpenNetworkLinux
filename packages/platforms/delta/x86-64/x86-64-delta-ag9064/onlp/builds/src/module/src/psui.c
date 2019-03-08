@@ -34,15 +34,6 @@
 
 #include "platform_lib.h"
 
-#define VALIDATE(_id)                           \
-    do                                          \
-    {                                           \
-        if(!ONLP_OID_IS_PSU(_id))               \
-        {                                       \
-            return ONLP_STATUS_E_INVALID;       \
-        }                                       \
-    } while(0)
-
 /*
  * Get all information about the given PSU oid.
  */
@@ -51,29 +42,41 @@ static onlp_psu_info_t pinfo[] =
     { }, /* Not used */
     {
         { ONLP_PSU_ID_CREATE(PSU_1), "PSU 1", 0 },
-        {"DPS-1300AB-6 D"},
+        "DPS-1300AB-6 D",
     },
     {
         { ONLP_PSU_ID_CREATE(PSU_2), "PSU 2", 0 },
-        {"DPS-1300AB-6 D"},
+        "DPS-1300AB-6 D",
     }
 };
 
-int onlp_psui_init(void)
+int onlp_psui_sw_init(void)
 {
     return ONLP_STATUS_OK;
 }
 
-int onlp_psui_info_get(onlp_oid_t id, onlp_psu_info_t* info)
+int onlp_psui_hw_init(uint32_t flags) {
+    return ONLP_STATUS_OK;
+}
+
+int onlp_psui_sw_denit(void) {
+    return ONLP_STATUS_OK;
+}
+
+int onlp_psui_hdr_get(onlp_oid_id_t id, onlp_oid_hdr_t* hdr) {
+    onlp_psu_info_t info;
+    onlp_psui_info_get(id, &info);
+    return info.hdr;
+}
+
+int onlp_psui_info_get(onlp_oid_id_t id, onlp_psu_info_t* info)
 {
     int rv                = ONLP_STATUS_OK;
     int local_id          = 0;
     uint32_t PSUStatus    = 0;
     uint32_t PSUIsPresent = 0;
     uint32_t PSUIsGood    = 0;
-    
-    VALIDATE(id);
-    
+
     local_id = ONLP_OID_ID_GET(id);
     *info = pinfo[local_id];
     
@@ -100,17 +103,17 @@ int onlp_psui_info_get(onlp_oid_t id, onlp_psu_info_t* info)
         
         if (PSUIsPresent != PSU_PRESENT_STATUS) 
         {
-            info->status &= ~ONLP_PSU_STATUS_PRESENT;
+            info->hdr.status &= ~ONLP_PSU_STATUS_PRESENT;
             return ONLP_STATUS_OK;
         }
         else
         {
-            info->status |= ONLP_PSU_STATUS_PRESENT;
+            info->hdr.status |= ONLP_PSU_STATUS_PRESENT;
         }
         
         if (PSUIsGood != PSU_POWER_GOOD_STATUS) 
         {
-            info->status |=  ONLP_PSU_STATUS_FAILED;
+            info->hdr.status |=  ONLP_PSU_STATUS_FAILED;
         }
     }
     else
@@ -120,9 +123,4 @@ int onlp_psui_info_get(onlp_oid_t id, onlp_psu_info_t* info)
     }
         
     return rv;
-}
-
-int onlp_psui_ioctl(onlp_oid_t pid, va_list vargs)
-{
-    return ONLP_STATUS_E_UNSUPPORTED;
 }

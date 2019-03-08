@@ -35,64 +35,61 @@
 
 #include "platform_lib.h"
 
-#define VALIDATE(_id)                           \
-    do                                          \
-    {                                           \
-        if(!ONLP_OID_IS_THERMAL(_id))           \
-        {                                       \
-            return ONLP_STATUS_E_INVALID;       \
-        }                                       \
-    } while(0)
-
 /* Static values */
 static onlp_thermal_info_t linfo[] = {
     { }, /* Not used */
     { 
-        { ONLP_THERMAL_ID_CREATE(THERMAL_CPU_CORE), "CPU Core", 0},
-        ONLP_THERMAL_STATUS_PRESENT,
+        { ONLP_THERMAL_ID_CREATE(THERMAL_CPU_CORE), "CPU Core", 0, {}, ONLP_THERMAL_STATUS_PRESENT},
         ONLP_THERMAL_CAPS_ALL, 0, ONLP_THERMAL_THRESHOLD_INIT_DEFAULTS
     },
     { 
-        { ONLP_THERMAL_ID_CREATE(THERMAL_ON_FAN_BROAD), "FAN Board", 0},
-        ONLP_THERMAL_STATUS_PRESENT,
+        { ONLP_THERMAL_ID_CREATE(THERMAL_ON_FAN_BROAD), "FAN Board", {}, ONLP_THERMAL_STATUS_PRESENT},
         ONLP_THERMAL_CAPS_ALL, 0, ONLP_THERMAL_THRESHOLD_INIT_DEFAULTS
     },
     { 
-        { ONLP_THERMAL_ID_CREATE(THERMAL_1_ON_MAIN_BOARD), "Close to right case", 0},
-        ONLP_THERMAL_STATUS_PRESENT,
+        { ONLP_THERMAL_ID_CREATE(THERMAL_1_ON_MAIN_BOARD), "Close to right case", 0, {}, ONLP_THERMAL_STATUS_PRESENT},
         ONLP_THERMAL_CAPS_ALL, 0, ONLP_THERMAL_THRESHOLD_INIT_DEFAULTS
     },
     { 
-        { ONLP_THERMAL_ID_CREATE(THERMAL_2_ON_MAIN_BOARD), "Placed between QSFP cage and MAC", 0},
-        ONLP_THERMAL_STATUS_PRESENT,
+        { ONLP_THERMAL_ID_CREATE(THERMAL_2_ON_MAIN_BOARD), "Placed between QSFP cage and MAC", 0, {}, ONLP_THERMAL_STATUS_PRESENT},
         ONLP_THERMAL_CAPS_ALL, 0, ONLP_THERMAL_THRESHOLD_INIT_DEFAULTS
     },
     { 
-        { ONLP_THERMAL_ID_CREATE(THERMAL_3_ON_MAIN_BOARD), "Close to left case", 0},
-        ONLP_THERMAL_STATUS_PRESENT,
+        { ONLP_THERMAL_ID_CREATE(THERMAL_3_ON_MAIN_BOARD), "Close to left case", 0, {}, ONLP_THERMAL_STATUS_PRESENT},
         ONLP_THERMAL_CAPS_ALL, 0, ONLP_THERMAL_THRESHOLD_INIT_DEFAULTS
     },
     { 
-        { ONLP_THERMAL_ID_CREATE(THERMAL_4_ON_MAIN_BOARD), "Board sensor near MAC", 0},
-        ONLP_THERMAL_STATUS_PRESENT,
+        { ONLP_THERMAL_ID_CREATE(THERMAL_4_ON_MAIN_BOARD), "Board sensor near MAC", 0, {}, ONLP_THERMAL_STATUS_PRESENT},
         ONLP_THERMAL_CAPS_ALL, 0, ONLP_THERMAL_THRESHOLD_INIT_DEFAULTS
     },
 };
 
-int onlp_thermali_init(void)
+int onlp_thermali_sw_init(void)
 {
     return ONLP_STATUS_OK;
 }
 
-int onlp_thermali_info_get(onlp_oid_t id, onlp_thermal_info_t* info)
+int onlp_thermali_hw_init(uint32_t flags) {
+    return ONLP_STATUS_OK;
+}
+
+int onlp_thermali_sw_denit(void) {
+    return ONLP_STATUS_OK;
+}
+
+int onlp_thermali_hdr_get(onlp_oid_id_t id, onlp_oid_hdr_t* rv) {
+    onlp_thermal_info_t info;
+    onlp_thermali_info_get(id, &info);
+    return info.hdr;
+}
+
+int onlp_thermali_info_get(onlp_oid_id_t id, onlp_thermal_info_t* rv)
 {
     int rv             = ONLP_STATUS_OK;
     int local_id       = 0;
     int temp_base      = 1000;
     uint32_t temp_data = 0;
-    
-    VALIDATE(id);
-    
+
     local_id = ONLP_OID_ID_GET(id);
     *info = linfo[local_id];
     
@@ -133,9 +130,4 @@ int onlp_thermali_info_get(onlp_oid_t id, onlp_thermal_info_t* info)
     }
     
     return rv;
-}
-
-int onlp_thermali_ioctl(int id, va_list vargs)
-{
-    return ONLP_STATUS_E_UNSUPPORTED;
 }

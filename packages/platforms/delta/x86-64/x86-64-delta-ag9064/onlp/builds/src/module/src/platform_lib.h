@@ -144,7 +144,7 @@ enum onlp_psu_id
 enum onlp_thermal_id
 {    
     THERMAL_RESERVED = 0,    
-    THERMAL_CPU_CORE,    
+    THERMAL_CPU_CORE,
     THERMAL_ON_FAN_BROAD,
     THERMAL_1_ON_MAIN_BOARD,
     THERMAL_2_ON_MAIN_BOARD,
