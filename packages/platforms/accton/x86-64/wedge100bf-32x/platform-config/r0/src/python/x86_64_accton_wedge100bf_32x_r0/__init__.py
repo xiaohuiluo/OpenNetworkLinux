@@ -2,7 +2,7 @@ from onl.platform.base import *
 from onl.platform.accton import *
 
 class OnlPlatform_x86_64_accton_wedge100bf_32x_r0(OnlPlatformAccton,
-                                                OnlPlatformPortConfig_32x100):
+                                                  OnlPlatformPortConfig_32x100):
     MODEL="Wedge-100bf-32X"
     PLATFORM="x86-64-accton-wedge100bf-32x-r0"
     SYS_OBJECT_ID=".100.32.2"
@@ -19,5 +19,7 @@ class OnlPlatform_x86_64_accton_wedge100bf_32x_r0(OnlPlatformAccton,
 
                 ('24c64', 0x50, 40),
                 ])
+        subprocess.call('ifconfig usb0 up', shell=True)
+        subprocess.call('ifconfig usb0 192.168.0.2/24', shell=True)
 
         return True

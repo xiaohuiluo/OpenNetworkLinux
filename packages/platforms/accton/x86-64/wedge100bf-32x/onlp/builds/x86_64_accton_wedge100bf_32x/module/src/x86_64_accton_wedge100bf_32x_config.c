@@ -5,6 +5,8 @@
  *****************************************************************************/
 #include <x86_64_accton_wedge100bf_32x/x86_64_accton_wedge100bf_32x_config.h>
 
+// TODO: should we modify this part for ONLPv2?
+
 /* <auto.start.cdefs(x86_64_accton_wedge100bf_32x_CONFIG_HEADER).source> */
 #define __x86_64_accton_wedge100bf_32x_config_STRINGIFY_NAME(_x) #_x
 #define __x86_64_accton_wedge100bf_32x_config_STRINGIFY_VALUE(_x) __x86_64_accton_wedge100bf_32x_config_STRINGIFY_NAME(_x)
