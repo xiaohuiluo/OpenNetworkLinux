@@ -108,12 +108,12 @@ int onlp_psui_info_get(onlp_oid_id_t id, onlp_psu_info_t* info)
         }
         else
         {
-            info->hdr.status |= ONLP_PSU_STATUS_PRESENT;
+            info->hdr.status |= ONLP_OID_STATUS_FLAG_PRESENT;
         }
         
         if (PSUIsGood != PSU_POWER_GOOD_STATUS) 
         {
-            info->hdr.status |=  ONLP_PSU_STATUS_FAILED;
+            info->hdr.status |= ONLP_OID_STATUS_FLAG_FAILED
         }
     }
     else
