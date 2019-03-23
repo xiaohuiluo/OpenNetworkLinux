@@ -1,0 +1,9 @@
+[Unit]
+Description=ONL boot.d
+
+[Service]
+Type=oneshot
+ExecStart=/etc/boot.d/boot
+
+[Install]
+WantedBy=multi-user.target
