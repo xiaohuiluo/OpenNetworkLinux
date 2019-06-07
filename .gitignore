@@ -23,3 +23,8 @@ RELEASE/
 # temporary files
 *~
 .#*
+
+.idea/
+bazel-*
+cmake-build-debug/
+onlp-dev_1.0.0_amd64.tar.gz

@@ -4,42 +4,41 @@
 const char*
 onlp_platformi_get(void)
 {
-    return "onlp-platform-sim";
+    return "onlp_sim";
 }
-
-char* onlp_platform_sim_platform_name = NULL;
 
 int
 onlp_platformi_set(const char* platform)
 {
-    onlp_platform_sim_platform_name = aim_strdup(platform);
-    return 0;
+    return ONLP_STATUS_OK;
 }
 
 int
 onlp_platformi_sw_init(void)
 {
-    char* json = getenv("ONLP_PLATFORM_SIM_JSON");
-    if(!json) {
-        json = "/lib/platform-config/current/onl/onlp-platform-sim.json";
-    }
-    return onlp_platform_sim_oids_init(json);
+    return ONLP_STATUS_OK;
+}
+
+int
+onlp_platformi_hw_init(uint32_t flags)
+{
+    return ONLP_STATUS_OK;
 }
 
 int
 onlp_platformi_manage_init(void)
 {
-    return 0;
+    return ONLP_STATUS_OK;
 }
 
 int
 onlp_platformi_manage_fans(void)
 {
-    return 0;
+    return ONLP_STATUS_OK;
 }
 
 int
 onlp_platformi_manage_leds(void)
 {
-    return 0;
+    return ONLP_STATUS_OK;
 }

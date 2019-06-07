@@ -31,7 +31,7 @@
 #include <unistd.h>
 
 #if ONLPLIB_CONFIG_I2C_USE_CUSTOM_HEADER == 1
-#include <linux/i2c-devices.h>
+#include <linux/i2c-dev.h>
 #else
 #include <linux/i2c-dev.h>
 #endif

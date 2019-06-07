@@ -3,26 +3,56 @@
 
 #include <onlp_platform_sim/oids.h>
 #include "onlp_platform_sim_log.h"
-
 int
 onlp_ledi_sw_init(void)
 {
-    return 0;
+    return ONLP_STATUS_OK;
 }
 
 int
 onlp_ledi_hw_init(uint32_t flags)
 {
-    return 0;
+    return ONLP_STATUS_OK;
 }
 
 int
-onlp_ledi_hdr_get(onlp_oid_t oid, onlp_oid_hdr_t* hdr)
+onlp_ledi_sw_denit(void)
 {
-    return onlp_platform_sim_led_get(oid, hdr, NULL, NULL);
+    return ONLP_STATUS_OK;
 }
+
 int
-onlp_ledi_info_get(onlp_oid_t oid, onlp_led_info_t* info)
+onlp_ledi_id_validate(onlp_oid_id_t id)
 {
-    return onlp_platform_sim_led_get(oid, NULL, info, NULL);
+    return ONLP_STATUS_OK;
+}
+
+int
+onlp_ledi_hdr_get(onlp_oid_id_t id, onlp_oid_hdr_t* rv)
+{
+    return ONLP_STATUS_OK;
+}
+
+int
+onlp_ledi_info_get(onlp_oid_id_t id, onlp_led_info_t* rv)
+{
+    return ONLP_STATUS_OK;
+}
+
+int
+onlp_ledi_caps_get(onlp_oid_id_t id, uint32_t* rv)
+{
+    return ONLP_STATUS_OK;
+}
+
+int
+onlp_ledi_mode_set(onlp_oid_id_t id, onlp_led_mode_t mode)
+{
+    return ONLP_STATUS_OK;
+}
+
+int
+onlp_ledi_char_set(onlp_oid_id_t id, char c)
+{
+    return ONLP_STATUS_OK;
 }

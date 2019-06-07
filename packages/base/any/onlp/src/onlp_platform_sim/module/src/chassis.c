@@ -11,13 +11,25 @@ onlp_chassisi_sw_init(void)
 }
 
 int
-onlp_chassisi_hdr_get(onlp_oid_t oid, onlp_oid_hdr_t* hdr)
+onlp_chassisi_hw_init(uint32_t flags)
 {
-    return onlp_platform_sim_chassis_get(oid, hdr, NULL, NULL);
+    return ONLP_STATUS_OK;
 }
 
 int
-onlp_chassisi_info_get(onlp_oid_t oid, onlp_chassis_info_t* info)
+onlp_chassisi_sw_denit(void)
 {
-    return onlp_platform_sim_chassis_get(oid, NULL, info, NULL);
+    return ONLP_STATUS_OK;
+}
+
+int
+onlp_chassisi_hdr_get(onlp_oid_id_t id, onlp_oid_hdr_t* hdr)
+{
+    return ONLP_STATUS_OK;
+}
+
+int
+onlp_chassisi_info_get(onlp_oid_id_t id, onlp_chassis_info_t* info)
+{
+    return ONLP_STATUS_OK;
 }
