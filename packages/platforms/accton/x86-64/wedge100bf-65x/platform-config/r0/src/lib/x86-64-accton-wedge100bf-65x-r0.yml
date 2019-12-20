@@ -17,8 +17,8 @@ x86-64-accton-wedge100bf-65x-r0:
       --parity=0
       --stop=1
 
-    kernel: 
-      <<: *kernel-4-9
+    kernel:
+      <<: *kernel-4-14
 
     args: >-
       nopat
